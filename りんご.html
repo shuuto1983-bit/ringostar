@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charst="UTF-8">
+    <style>
+        body {
+            background: linear-gradient(135deg, #b4c1d0 0%, #edb1b1 100%);
+            min-height: 100vh;
+            margin: 500;
+        }
+
+        table {
+            background-color: #f3f4f7;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        td {
+            border: 1px solid #ccc;
+            padding: 15px;
+            text-align: center;
+            width: 33.3%;
+
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .result-cell {
+            background-color: #ccc;
+            color: #856404;
+            font-weight: bold;
+
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <h2>利益計算</h2>
+
+    購入金額： <input type="number" id="a" value="1000" oninput="calc1()">
+    入金額： <input type="number" id="b" value="1500" oninput="calc1()">
+
+    <br><br>
+
+    <table>
+        <tr>
+            <td style="background-color: #a2c1e3;">
+                <h1>利益率(%)</h1>
+            </td>
+            <td style="background-color: #a2c1e3;">
+                <h2>20％の利益を確保する最大額(円)</h2>
+            </td>
+            <td style="background-color: #a2c1e3;">
+                <h3>必要ポイント</h3>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>
+                <h1 id="profit" value="50">50</h1>
+            </td>
+            <td>
+                <h2 id="price" value="1200">1200</h2>
+
+            </td>
+            <td>
+                <h3 id="point" value="200">200</h3>
+            </td>
+        </tr>
+
+
+    </table>
+
+    <h2>容積重量</h2>
+
+    L(cm):<input type="number" id="l" value="20" oninput="calc2()">
+    W(cm):<input type="number" id="w" value="20" oninput="calc2()">
+    H(cm):<input type="number" id="h" value="25" oninput="calc2()">
+
+    <br><br>
+
+    <table>
+        <tr>
+            <td style="background-color: #a2c1e3;">
+                <h1>容積重量</h1>
+            </td>
+            <td style="background-color: #a2c1e3;">
+                <h2>容積重量(+3cm)</h2>
+            </td>
+
+
+        </tr>
+
+        <tr>
+            <td>
+                <h1 id="VW" value="2.0">2.0</h1>
+            </td>
+            <td>
+                <h2 id="VW3" value="3.0">3.0</h2>
+            </td>
+
+        </tr>
+
+
+    </table>
+
+    <body>
+        <h2>送料計算</h2>
+
+        容積重量から算出した送料： <input type="number" id="c" value="50000" oninput="calc3()">
+        商品代金： <input type="number" id="d" value="100000" oninput="calc3()">
+
+        <br><br>
+
+        <table>
+            <tr>
+                <td style="background-color: #a2c1e3;">
+                    <h1>容積重量から算出した送料(円)</h1>
+                </td>
+                <td style="background-color: #a2c1e3;">
+                    <h2>商品代金(円)</h2>
+                </td>
+                <td style="background-color: #a2c1e3;">
+                    <h3>物流保険・手数料込みの送料(円)</h3>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <h1 id="c" value="50000">50000</h1>
+                </td>
+                <td>
+                    <h2 id="d" value="100000">10000</h2>
+                <td>
+                    <h3 id="e" value="100000">10000</h3>
+
+
+            </tr>
+
+
+        </table>
+
+        <script>
+            function calc1() {
+                const a = Number(document.getElementById("a").value);
+                const b = Number(document.getElementById("b").value);
+                const profit = Number(document.getElementById("profit").value);
+                const price = Number(document.getElementById("price").value);
+                const point = Number(document.getElementById("point").value);
+
+
+                document.getElementById("profit").textContent = Math.round(((b - a) / b) * 1000) / 10;
+                document.getElementById("price").textContent = Math.round((b * 0.8) * 10) / 10;
+
+                if ((b * 0.8) > a) {
+                    const c = Math.round((((b * 0.8) * 10) / 10) - a);
+                    document.getElementById("point").textContent = c;
+
+                } else {
+                    document.getElementById("point").textContent = "不要";
+                }
+            }
+
+
+            function calc2() {
+                const l = Number(document.getElementById("l").value);
+                const w = Number(document.getElementById("w").value);
+                const h = Number(document.getElementById("h").value);
+                const VW = Number(document.getElementById("VW").value);
+                const V3 = Number(document.getElementById("VW3").value);
+
+                document.getElementById("VW").textContent = Math.round(((l * w * h) / 5000) * 10) / 10;
+                document.getElementById("VW3").textContent = Math.round((((l + 3) * (w + 3) * (h + 3)) / 5000) * 10) / 10;
+
+            }
+            function calc3() {
+                const c = Number(document.getElementById("c").value);
+                const d = Number(document.getElementById("d").value);
+                const e = Number(document.getElementById("e").value);
+
+                const shipfee1 = c + 3300 + 2500 + 6000 + 1000;
+                const shipfee2 = c + (d * 0.012) + 3300 + 6000 + 1000;
+
+                if (shipfee1 > shipfee2) {
+
+                    document.getElementById("e").textContent = shipfee1;
+
+                } else {
+                    document.getElementById("e").textContent = shipfee2;
+                }
+            }
+
+        </script>
+
+
+    </body>
+
+</html>
